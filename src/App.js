@@ -1,24 +1,75 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import "@fontsource/ubuntu";
+import { useState } from "react";
+import Form from "./Form";
+import MainUi from "./MainUi";
+import FormContext from "./FormContext";
 
-function App() {
+function App({ setElapsedTimeInSeconds }) {
+  const [ShowForm, setShowForm] = useState(true);
+  const [ShowMainUi, setMainUi] = useState(false);
+
+  const [userTask, setUserTask] = useState("");
+  const [userTaskTime, setUserTaskTime] = useState("");
+
+  const [isRunning, setIsRunning] = useState("false");
+
+  const ShowFormHandler = () => {
+    setShowForm(true);
+    setMainUi(false);
+
+    setUserTask("");
+    setUserTaskTime("");
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <FormContext.Provider
+        value={{
+          ShowForm,
+          setShowForm,
+          ShowMainUi,
+          setMainUi,
+          userTask,
+          setUserTask,
+          userTaskTime,
+          setUserTaskTime,
+          isRunning,
+          setIsRunning,
+        }}
+      >
+        <div className="UtlityMainContainer">
+          <div className="HeaderTextContainer">
+            <h1>Pomodoro Technique</h1>
+          </div>
+          <div className="ButtonNewOneContainer">
+            <button className="NewOneButton" onClick={ShowFormHandler}>
+              {" "}
+              New One
+            </button>
+          </div>
+        </div>
+        {ShowForm && (
+          <Form
+            setShowForm={setShowForm}
+            setMainUi={setMainUi}
+            userTask={userTask}
+            userTaskTime={userTaskTime}
+            setUserTask={setUserTask}
+            setUserTaskTime={setUserTaskTime}
+          />
+        )}
+        {ShowMainUi && (
+          <MainUi
+            setShowForm={setShowForm}
+            setMainUi={setMainUi}
+            userTask={userTask}
+            userTaskTime={userTaskTime}
+            setUserTask={setUserTask}
+            setUserTaskTime={setUserTaskTime}
+          />
+        )}
+      </FormContext.Provider>
+    </>
   );
 }
 
